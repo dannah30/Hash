@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HashLab | Colisões de Hash</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #050b08;
+    color: #e0ffe9;
+    font-family: Consolas, monospace;
+    min-height: 100vh;
+}
+
+header {
+    padding: 25px 8%;
+    border-bottom: 1px solid #164b2b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 23px;
+    color: #00ff80;
+    font-weight: bold;
+}
+
+.status {
+    color: #00ff80;
+    font-size: 12px;
+}
+
+main {
+    max-width: 900px;
+    margin: 65px auto;
+    padding: 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.hero span {
+    color: #00ff80;
+    letter-spacing: 4px;
+    font-size: 12px;
+}
+
+h1 {
+    font-size: 42px;
+    margin: 20px 0;
+    color: #00ff80;
+    text-shadow: 0 0 20px #00ff8055;
+}
+
+.hero p {
+    color: #91b59e;
+    line-height: 1.7;
+}
+
+.painel {
+    background: #0b1710;
+    border: 1px solid #176b3b;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 30px #00ff8010;
+}
+
+.painel h2 {
+    color: #00ff80;
+    margin-bottom: 15px;
+}
+
+.painel p {
+    color: #91b59e;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    background: #050b08;
+    border: 1px solid #176b3b;
+    border-radius: 8px;
+    color: #00ff80;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #00ff80;
+    box-shadow: 0 0 10px #00ff8033;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background: #00ff80;
+    border: none;
+    border-radius: 8px;
+    color: #041108;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #8affb9;
+    transform: scale(1.02);
+}
+
+.resultado {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #050b08;
+    border: 1px solid #176b3b;
+    display: none;
+    line-height: 1.8;
+}
+
+.hash {
+    color: #00ff80;
+    font-size: 20px;
+}
+
+.sucesso {
+    color: #00ff80;
+}
+
+.erro {
+    color: #ff6464;
+}
+
+.info {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: #0b1710;
+    border: 1px solid #164b2b;
+    padding: 22px;
+    border-radius: 12px;
+}
+
+.card h3 {
+    color: #00ff80;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #91b59e;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #53745d;
+    font-size: 12px;
+}
+
+@media(max-width: 600px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    .inputs {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">⌘ HASHLAB</div>
+    <div class="status">● SISTEMA ONLINE</div>
+</header>
+
+<main>
+
+<section class="hero">
+    <span>LABORATÓRIO DE CRIPTOGRAFIA</span>
+    <h1>Descubra a Colisão</h1>
+    <p>
+        Duas palavras diferentes podem gerar o mesmo
+        resultado de Hash? Faça o teste e descubra!
+    </p>
+</section>
+
+<section class="painel">
+    <h2> >_ Testador de Hash</h2>
+
+    <p>
+        Digite duas palavras com pelo menos duas letras
+        e compare os resultados.
+    </p>
+
+    <div class="inputs">
+        <input type="text" id="palavra1" placeholder="Primeira palavra">
+        <input type="text" id="palavra2" placeholder="Segunda palavra">
+    </div>
+
+    <button onclick="compararHash()">
+        EXECUTAR COMPARAÇÃO
+    </button>
+
+    <div class="resultado" id="resultado"></div>
+</section>
+
+<section class="info">
+
+    <div class="card">
+        <h3>🔐 O que é Hash?</h3>
+        <p>
+            É uma função que transforma uma informação
+            em um valor de tamanho determinado.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>⚡ O que é colisão?</h3>
+        <p>
+            Acontece quando duas entradas diferentes
+            produzem exatamente o mesmo resultado de Hash.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>🧠 Por que acontece?</h3>
+        <p>
+            Quando existem mais entradas possíveis do que
+            resultados disponíveis, colisões são inevitáveis
+            em funções de Hash com saída limitada.
+        </p>
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    HASHLAB © 2026 | PROJETO EDUCATIVO DE SEGURANÇA DIGITAL
+</footer>
+
+<script>
+function calcula_hash(palavra) {
+    let resultado = 0;
+
+    for (let letra of palavra) {
+        resultado += letra.charCodeAt(0);
+    }
+
+    return resultado;
+}
+
+function compararHash() {
+    const palavra1 = document.getElementById("palavra1").value;
+    const palavra2 = document.getElementById("palavra2").value;
+    const resultado = document.getElementById("resultado");
+
+    resultado.style.display = "block";
+
+    if (palavra1.trim().length < 2 || palavra2.trim().length < 2) {
+        resultado.innerHTML =
+            '<span class="erro">ERRO: Digite duas palavras com pelo menos duas letras.</span>';
+        return;
+    }
+
+    const hash1 = calcula_hash(palavra1);
+    const hash2 = calcula_hash(palavra2);
+
+    let mensagem = "";
+
+    if (palavra1 === palavra2) {
+        mensagem = '<p class="erro">Digite duas palavras diferentes!</p>';
+    } else if (hash1 === hash2) {
+        mensagem = `
+            <h3 class="sucesso">✓ COLISÃO ENCONTRADA!</h3>
+            <p>As palavras são diferentes, mas possuem o mesmo Hash.</p>
+        `;
+    } else {
+        mensagem = `
+            <h3 class="erro">✕ Nenhuma colisão encontrada.</h3>
+            <p>Os resultados das duas palavras são diferentes.</p>
+        `;
+    }
+
+    resultado.innerHTML = `
+        <p>Palavra 1: <strong>${escaparHTML(palavra1)}</strong></p>
+        <p>Hash 1: <span class="hash">${hash1}</span></p>
+        <br>
+        <p>Palavra 2: <strong>${escaparHTML(palavra2)}</strong></p>
+        <p>Hash 2: <span class="hash">${hash2}</span></p>
+        <br>
+        ${mensagem}
+    `;
+}
+
+function escaparHTML(texto) {
+    return texto.replace(/[&<>"']/g, caractere => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[caractere]);
+}
+</script>
+
+</body>
+</html>
